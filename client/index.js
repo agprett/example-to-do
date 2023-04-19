@@ -79,13 +79,19 @@ const addTask = (event) => {
   const name = document.getElementById('new-task-name')
   const priority = document.getElementById('new-task-priority')
 
-  const body = {name: name.value, priority: priority.value}
-
-  axios.post('/api/tasks', body)
-    .then(() => {
-      alert('Task added!')
-      getTasks()
-    })
+  if(name.value && priority.value !== 'Select priority'){
+    const body = {name: name.value, priority: priority.value}
+  
+    axios.post('/api/tasks', body)
+      .then(() => {
+        alert('Task added!')
+        getTasks()
+        name.value = ''
+        priority.value = 'Select priority'
+      })
+  } else {
+    alert('You must have a valid name and priority to add task!')
+  }
 }
 
 newTaskForm.addEventListener('submit', addTask)
